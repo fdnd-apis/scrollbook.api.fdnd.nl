@@ -21,3 +21,21 @@ module.exports = express
       next(err)
     }
   })
+
+  .patch('/', async (req, res, next)=>{
+    try {
+      const category = req.body
+      res.json(await CategoryController.update(new Category(category)))
+    } catch (err) {
+      next(err)
+    }
+  })
+
+  .delete('/', async (req, res, next)=>{
+    try {
+      const category_id = req.body.category_id
+      res.json(await CategoryController.delete(category_id))
+    } catch (err) {
+      next(err)
+    }
+  })

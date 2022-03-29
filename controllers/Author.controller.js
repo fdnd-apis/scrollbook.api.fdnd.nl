@@ -27,13 +27,29 @@ const AuthorController = {
 
   async delete(author_id) {
     const rows = await db.query(`
-    DELETE FROM 'author' WHERE 'author_id' = ?
+    DELETE FROM author WHERE author_id = ?
     `,
     [author_id])
 
     return {
       meta: { 
         author_id,
+        affectedRows: rows.affectedRows,
+        changedRows: rows.changedRows,
+      }
+    }
+  },
+
+  async update(author) {
+    const rows = await db.query(`
+    UPDATE author SET name = ?, surname = ?,
+    initials = ?, date_of_birth = ?, created_at = ?, updated_at = ?
+    `, prepareForUpdate(author))
+
+    return {
+      data: { author },
+      meta: {
+        author_id: author.author_id,
         affectedRows: rows.affectedRows,
         changedRows: rows.changedRows,
       }
@@ -52,4 +68,8 @@ function prepareForInsert(author) {
     author.created_at,
     author.updated_at,
   ]
+}
+
+function prepareForUpdate(author) {
+  return [...prepareForInsert(author), author.author_id]
 }

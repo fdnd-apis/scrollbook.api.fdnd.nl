@@ -21,3 +21,21 @@ module.exports = express
       next(err)
     }
   })
+
+  .patch('/', async (req, res, next)=>{
+    try {
+      const book = req.body
+      res.json(await BookController.update(new Book(book)))
+    } catch (err) {
+      next(err)
+    }
+  })
+
+  .delete('/', async (req, res, next)=>{
+    try {
+      const book_id = req.body.book_id
+      res.json(await BookController.delete(book_id))
+    } catch (err) {
+      next(err)
+    }
+  })

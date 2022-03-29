@@ -9,13 +9,20 @@ const CategoryController = {
     }
   },
 
+  async getById(id) {
+    const rows = await db.query(`SELECT * FROM category WHERE category_id = ?`, [id])
+    return {
+      data: helper.emptyOrRows(rows)
+    }
+  },
+
   async create(category) {
     const rows = await db.query(
       `INSERT INTO category SET type = ?`,
       prepareForInsert(category)
     )
     return {
-      data: author,
+      data: category,
       meta: {
         insertId: rows.insertId,
       },
@@ -24,7 +31,7 @@ const CategoryController = {
 
   async delete(category_id) {
     const rows = await db.query(`
-    DELETE FROM 'category' WHERE 'category_id' = ?`,
+    DELETE FROM category WHERE category_id = ?`,
     [category_id])
 
     return {
@@ -38,7 +45,8 @@ const CategoryController = {
 
   async update(category) {
     const rows = await db.query(
-    `INSERT INTO category SET type = ?`,
+    `UPDATE category SET type = ?
+    WHERE category_id = ?`,
     prepareForUpdate(category))
 
     return {

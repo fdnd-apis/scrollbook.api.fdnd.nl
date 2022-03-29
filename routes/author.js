@@ -13,6 +13,15 @@ module.exports = express
     }
   })
 
+  .get('/:id', async (req, res, next) => {
+    try {
+      const id = req.params.id
+      res.json(await AuthorController.getById(id))
+    } catch (err) {
+      next(err)
+    }
+  })
+
   .post('/', async (req, res, next) => {
     try {
       const author = req.body

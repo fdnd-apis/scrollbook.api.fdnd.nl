@@ -9,6 +9,13 @@ const AuthorController = {
     }
   },
 
+  async getById(id) {
+    const rows = await db.query(`SELECT * FROM author WHERE author_id = ?`, [id])
+    return {
+      data: helper.emptyOrRows(rows)
+    }
+  },
+
   async create(author) {
     const rows = await db.query(
       `
@@ -43,7 +50,8 @@ const AuthorController = {
   async update(author) {
     const rows = await db.query(`
     UPDATE author SET name = ?, surname = ?,
-    initials = ?, date_of_birth = ?, created_at = ?, updated_at = ?
+    initials = ?, date_of_birth = ?
+    WHERE author_id = ?
     `, prepareForUpdate(author))
 
     return {
@@ -64,9 +72,7 @@ function prepareForInsert(author) {
     author.name,
     author.surname,
     author.initials,
-    author.date_of_birth,
-    author.created_at,
-    author.updated_at,
+    author.date_of_birth
   ]
 }
 

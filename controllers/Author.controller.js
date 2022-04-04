@@ -20,7 +20,7 @@ const AuthorController = {
     const rows = await db.query(
       `
         INSERT INTO author SET name = ?, surname = ?,
-        initials = ?, date_of_birth = ?, created_at = ?, updated_at = ?
+        initials = ?, date_of_birth = ?
       `,
       prepareForInsert(author)
     )
